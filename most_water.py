@@ -13,7 +13,7 @@
 #                 most_water = temp
 #     return most_water
 ## move l or r to find higher wall
-## method 2:
+## method 2: 44% faster, 89% less space
 def maxArea(height):
     l, r, most_water = 0, len(height)-1, 0
     while l < r:
