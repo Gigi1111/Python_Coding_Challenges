@@ -1,30 +1,43 @@
-# https://leetcode.com/problems/increasing-order-search-tree/
-## method 1:
-class TreeNode:
-    def __init__(self, val=0, left=None, right=None):
-        self.val = val
-        self.left = left
-        self.right = right
+# https://leetcode.com/problems/add-two-numbers/solution/
+## method 1: 88% 64% O(max(m,n)), O(max(m,n)+1)
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
 class Solution:
-    def increasingBST(self, root):
-        #  def inorder(node):
-        #     if node:
-        #         inorder(node.left)
-        #         node.left = None
-        #         self.cur.right = node
-        #         self.cur = node
-        #         inorder(node.right)
-        #
-        # ans = TreeNode(None)
-        # self.cur = TreeNode(None)
-        # inorder(root)
-        # return ans.right
-        return root.left
+    def addTwoNumbers(self, l1: Optional[ListNode], l2: Optional[ListNode]) -> Optional[ListNode]:
+        ans = ListNode(-1)
+        ans_cur = ans
+        carry = 0
+        while l1 or l2 or carry:
+            ans_cur.next = ListNode()
+            ans_cur = ans_cur.next
 
-ob = Solution()
-example = TreeNode([5,1,7])
-# Input: root = [5,3,6,2,4,null,8,1,null,null,null,7,9]
-# Output: [1,null,2,null,3,null,4,null,5,null,6,null,7,null,8,null,9]
-# Input: root = [5,1,7]
-# Output: [1,null,5,null,7]
-print(ob.increasingBST(example))
+            val1 = (l1.val if l1 else 0)
+            val2 = (l2.val if l2 else 0)
+            carry, ans_cur.val = divmod(val1 + val2 + carry, 10)
+
+            l1 = (l1.next if l1 else None)
+            l2 = (l2.next if l2 else None)
+
+        return ans.next
+### method2: 62% 82%
+class Solution:
+    def mergeTwoLists(self, list1: Optional[ListNode], list2: Optional[ListNode]) -> Optional[ListNode]:
+        if not list1: return list2
+        if not list2: return list1
+
+        ans = ListNode(-1)
+        current = ans
+        while list1 and list2:
+            current.next = ListNode(list1.val) if list1.val <= list2.val else ListNode(list2.val)
+            tmp1 = list1.val
+            list1 = list1.next if list1.val <= list2.val else list1
+            list2 = list2.next if tmp1 > list2.val else list2
+
+            current = current.next
+
+        current.next = list1 if list1 else list2
+
+        return ans.next
